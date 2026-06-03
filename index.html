@@ -1,28 +1,248 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Estimasi Biaya Kegiatan</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estimasi Biaya Kegiatan Mahasiswa</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:linear-gradient(135deg,#00b4db,#0083b0);
+            min-height:100vh;
+            padding:30px;
+        }
+
+        .container{
+            max-width:900px;
+            margin:auto;
+        }
+
+        .card{
+            background:white;
+            border-radius:12px;
+            padding:20px;
+            margin-bottom:20px;
+            box-shadow:0 4px 10px rgba(0,0,0,.15);
+        }
+
+        h1{
+            color:#1565c0;
+            margin-bottom:8px;
+        }
+
+        .subtitle{
+            color:#666;
+            font-size:14px;
+        }
+
+        .info-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:20px;
+        }
+
+        h3{
+            color:#1565c0;
+            margin-bottom:10px;
+        }
+
+        ul{
+            padding-left:20px;
+        }
+
+        .form-group{
+            margin-bottom:15px;
+        }
+
+        label{
+            display:block;
+            margin-bottom:5px;
+            font-weight:bold;
+        }
+
+        input,select{
+            width:100%;
+            padding:10px;
+            border:1px solid #ccc;
+            border-radius:6px;
+        }
+
+        button{
+            width:100%;
+            background:#1976d2;
+            color:white;
+            border:none;
+            padding:12px;
+            border-radius:6px;
+            cursor:pointer;
+            font-weight:bold;
+        }
+
+        button:hover{
+            background:#0d47a1;
+        }
+
+        .result{
+            margin-top:20px;
+            border-left:4px solid #1976d2;
+            background:#f5f9ff;
+            padding:15px;
+            border-radius:8px;
+            display:none;
+        }
+
+        .total{
+            color:#1565c0;
+            font-size:22px;
+            font-weight:bold;
+            margin-top:10px;
+        }
+
+        footer{
+            text-align:center;
+            color:white;
+            margin-top:15px;
+            font-size:13px;
+        }
+
+        @media(max-width:768px){
+            .info-grid{
+                grid-template-columns:1fr;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Estimasi Biaya Konsumsi Kegiatan Mahasiswa</h1>
+<div class="container">
 
-    <p>Nama : Surya</p>
-    <p>NIM : 009</p>
+    <div class="card">
+        <h1>📊 Estimasi Biaya Kegiatan Mahasiswa</h1>
+        <p class="subtitle">
+            Sistem Estimasi Konsumsi Kegiatan Mahasiswa Berbasis Azure Serverless
+        </p>
+    </div>
 
-    <h3>Daftar Harga</h3>
+    <div class="info-grid">
 
-    <ul>
-        <li>Snack : Rp15.000</li>
-        <li>Makan : Rp30.000</li>
-        <li>Lengkap : Rp45.000</li>
-    </ul>
+        <div class="card">
+            <h3>👨‍🎓 Mahasiswa</h3>
+            <p><strong>Nama :</strong> M Farrel Alsh-shiddieq Ihsan</p>
+            <p><strong>NIM :</strong> 0920240000</p>
+        </div>
 
-    <h3>Contoh Penggunaan API</h3>
+        <div class="card">
+            <h3>☁️ Azure Services</h3>
+            <ul>
+                <li>Azure Static Web Apps</li>
+                <li>Azure Functions</li>
+            </ul>
+        </div>
 
-    <p>
-        /api/estimasi?jumlah=40&jenis=snack
-    </p>
+    </div>
+
+    <div class="card">
+
+        <h2 style="color:#1565c0;margin-bottom:20px;">
+            Hitung Estimasi Konsumsi
+        </h2>
+
+        <div class="form-group">
+            <label>Jumlah Peserta</label>
+            <input type="number" id="jumlah" value="20">
+        </div>
+
+        <div class="form-group">
+            <label>Jenis Konsumsi</label>
+            <select id="jenis">
+                <option value="snack">Snack</option>
+                <option value="makan">Makan</option>
+                <option value="lengkap">Lengkap</option>
+            </select>
+        </div>
+
+        <button onclick="hitungBiaya()">
+            Hitung Estimasi Biaya
+        </button>
+
+        <div class="result" id="hasil">
+
+            <h3>📈 Hasil Estimasi</h3>
+
+            <p><strong>Jumlah Peserta:</strong>
+                <span id="rJumlah"></span>
+            </p>
+
+            <p><strong>Jenis Konsumsi:</strong>
+                <span id="rJenis"></span>
+            </p>
+
+            <p><strong>Harga per Peserta:</strong>
+                <span id="rHarga"></span>
+            </p>
+
+            <p><strong>Waktu Proses:</strong>
+                <span id="rWaktu"></span>
+            </p>
+
+            <div class="total">
+                💰 Total Estimasi:
+                <span id="rTotal"></span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer>
+        Mini Project Komputasi Awan - Azure Serverless
+    </footer>
+
+</div>
+
+<script>
+
+function hitungBiaya(){
+
+    let jumlah = parseInt(document.getElementById("jumlah").value);
+    let jenis = document.getElementById("jenis").value;
+
+    let harga = 0;
+
+    if(jenis === "snack"){
+        harga = 15000;
+    }
+    else if(jenis === "makan"){
+        harga = 30000;
+    }
+    else{
+        harga = 45000;
+    }
+
+    let total = jumlah * harga;
+
+    document.getElementById("rJumlah").innerText = jumlah;
+    document.getElementById("rJenis").innerText = jenis;
+    document.getElementById("rHarga").innerText =
+        "Rp " + harga.toLocaleString('id-ID');
+
+    document.getElementById("rTotal").innerText =
+        "Rp " + total.toLocaleString('id-ID');
+
+    document.getElementById("rWaktu").innerText =
+        new Date().toLocaleString('id-ID');
+
+    document.getElementById("hasil").style.display = "block";
+}
+
+</script>
 
 </body>
 </html>
